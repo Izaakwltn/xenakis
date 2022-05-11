@@ -30,8 +30,8 @@ impl Point {
         build_point(self.x, self.y, self.z)
     }
 
-    fn point_to_vector(&self) -> Vector {
-        Vector::build_vector(self.x, self.y, self.z)
+    fn to_vector(&self) -> Vector {
+        crate::vectors::build_vector(self.x, self.y, self.z)
     }
 }
 
@@ -47,7 +47,7 @@ fn point_test() {
     assert_eq!(test_copy.y, 1.0);
     assert_eq!(test_copy.z, 0.0);
 
-    let test_v = test_copy.point_to_vector();
+    let test_v = test_copy.to_vector();
     assert_eq!(test_v.x, 0.0);
     assert_eq!(test_v.y, 1.0);
     assert_eq!(test_v.z, 0.0);
