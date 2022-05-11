@@ -19,14 +19,6 @@ pub fn default_vector() -> Vector {
 }
 
 impl Vector {
-    /*    pub fn build_vector(x: f32, y: f32, z: f32) -> Vector {
-        Vector { x, y, z }
-    }
-
-    pub fn default_vector() -> Vector {
-        Self::build_vector(0.0, 1.0, 0.0)
-    }*/
-
     pub fn copy(&self) -> Vector {
         build_vector(self.x, self.y, self.z)
     }

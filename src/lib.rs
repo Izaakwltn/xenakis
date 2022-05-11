@@ -1,4 +1,6 @@
 mod points;
+mod rays;
+mod shapes;
 mod vectors;
 
 #[cfg(test)]

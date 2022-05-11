@@ -18,23 +18,18 @@ pub fn default_point() -> Point {
 }
 
 impl Point {
-    /*pub fn build_point(x: f32, y: f32, z: f32) -> Point {
-        Point { x, y, z }
-    }
-
-    pub fn default_point() -> Point {
-        Self::build_point(0.0, 1.0, 0.0)
-    }*/
-
     fn copy(&self) -> Point {
         build_point(self.x, self.y, self.z)
     }
 
-    fn to_vector(&self) -> Vector {
+    pub fn to_vector(&self) -> Vector {
         crate::vectors::build_vector(self.x, self.y, self.z)
     }
 }
 
+pub fn point_subtract(a: Point, b: Point) -> Point {
+    build_point(a.x - b.x, a.y - b.y, a.z - b.z)
+}
 #[test]
 fn point_test() {
     let test_point = default_point();

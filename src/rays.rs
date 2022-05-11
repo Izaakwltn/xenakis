@@ -1,17 +1,20 @@
-use crate::points;
-use crate::vectors;
+use crate::points::build_point;
+use crate::points::default_point;
+use crate::points::Point;
+use crate::vectors::default_vector;
+use crate::vectors::Vector;
 
 //------------------------------------------------------------------------
 //Rays
 //------------------------------------------------------------------------
 
 pub struct Ray {
-    origin: Point,
-    direction: Vector,
+    pub origin: Point,
+    pub direction: Vector,
     t_max: f32,
 }
 
-pub fn build_ray(origin: Point, direction: Vector, t_max: f64) -> Ray {
+pub fn build_ray(origin: Point, direction: Vector, t_max: f32) -> Ray {
     Ray {
         origin,
         direction,
@@ -20,11 +23,17 @@ pub fn build_ray(origin: Point, direction: Vector, t_max: f64) -> Ray {
 }
 
 pub fn default_ray() -> Ray {
-    build_ray(default_point(), default_vector(), 10000000000000000)
+    build_ray(default_point(), default_vector(), 10000000000000000.0)
 }
 impl Ray {
+    pub fn normalize_direction(&self) -> Vector {
+        let magn = self.direction.length().sqrt();
+        self.direction.scalar_mult(1.0 / magn)
+    }
+
     pub fn point_on_the_line(&self, t: f32) -> Point {
-        let directional = self.direction.scalar_mult(t);
+        let d = self.normalize_direction();
+        let directional = d.scalar_mult(t);
 
         build_point(
             self.origin.x + directional.x,
