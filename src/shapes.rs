@@ -1,6 +1,6 @@
 use crate::points::point_subtract;
-use crate::points::to_vector;
 use crate::points::Point;
+use crate::points::Point::to_vector;
 use crate::rays::Ray;
 use crate::vectors::dot_product;
 use crate::vectors::Vector;
@@ -65,7 +65,13 @@ impl Sphere {
         let oc = point_subtract(self.center, ray.origin).to_vector();
         dot_product(oc, oc) < self.radius_squared
     }
+
+    pub fn closest_approach(&self, ray: Ray) -> f32 {
+        let oc = point_subtract(self.center, ray.origin).to_vector();
+        dot_product(oc, ray.direction)
+    }
 }
+
 //maybe make is_intersection for each shape as impl function
 
 /*pub fn is_intersection(sphere: Sphere, ray: Ray) -> bool {
