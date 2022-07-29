@@ -25,10 +25,22 @@ pub fn build_ray(origin: Point, direction: Vector, t_max: f32) -> Ray {
 pub fn default_ray() -> Ray {
     build_ray(default_point(), default_vector(), 10000000000000000.0)
 }
+
+impl Copy for Ray {}
+
+impl Clone for Ray {
+    fn clone(&self) -> Ray {
+        *self
+    }
+}
 impl Ray {
     pub fn normalize_direction(&self) -> Vector {
         let magn = self.direction.length().sqrt();
-        self.direction.scalar_mult(1.0 / magn)
+        crate::vectors::build_vector(
+            (self.direction.x / magn),
+            (self.direction.y / magn),
+            (self.direction.z / magn),
+        )
     }
 
     pub fn point_on_the_line(&self, t: f32) -> Point {

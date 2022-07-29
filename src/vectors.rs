@@ -17,7 +17,13 @@ pub fn build_vector(x: f32, y: f32, z: f32) -> Vector {
 pub fn default_vector() -> Vector {
     build_vector(0.0, 1.0, 0.0)
 }
+impl Copy for Vector {}
 
+impl Clone for Vector {
+    fn clone(&self) -> Vector {
+        *self
+    }
+}
 impl Vector {
     pub fn copy(&self) -> Vector {
         build_vector(self.x, self.y, self.z)

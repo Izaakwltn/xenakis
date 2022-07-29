@@ -17,8 +17,15 @@ pub fn default_point() -> Point {
     build_point(0.0, 1.0, 0.0)
 }
 
+impl Copy for Point {}
+
+impl Clone for Point {
+    fn clone(&self) -> Point {
+        *self
+    }
+}
 impl Point {
-    fn copy(&self) -> Point {
+    pub fn copy(&self) -> Point {
         build_point(self.x, self.y, self.z)
     }
 

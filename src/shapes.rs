@@ -1,6 +1,6 @@
 use crate::points::point_subtract;
+//use crate::points::to_vector;
 use crate::points::Point;
-use crate::points::Point::to_vector;
 use crate::rays::Ray;
 use crate::vectors::dot_product;
 use crate::vectors::Vector;
@@ -13,7 +13,7 @@ use crate::vectors::Vector;
 //Spheres
 //------------------------------------------------------------------------
 
-struct Sphere {
+pub struct Sphere {
     center: Point,
     radius: f32,
     radius_squared: f32,
@@ -21,14 +21,14 @@ struct Sphere {
 
 pub fn build_sphere(center: Point, radius: f32) -> Sphere {
     Sphere {
-        center: center,
-        radius: radius,
+        center,
+        radius,
         radius_squared: radius * radius,
     }
 }
 
 impl Sphere {
-    pub fn slow_is_intersection(&self, ray: Ray) -> bool {
+    /*pub fn slow_is_intersection(&self, ray: Ray) -> bool {
         let a = ray.normalize_direction();
         let b = 2.0
             * ((a.x * (ray.origin.x + self.center.x))
@@ -59,17 +59,32 @@ impl Sphere {
         let t = (-b - discriminant.sqrt()) / 2.0;
 
         ray.point_on_the_line(t)
-    }
+    }*/
 
     pub fn origin_inside_sphere(&self, ray: Ray) -> bool {
-        let oc = point_subtract(self.center, ray.origin).to_vector();
+        let oc = point_subtract(self.center.copy(), ray.origin.copy()).to_vector();
         dot_product(oc, oc) < self.radius_squared
     }
 
     pub fn closest_approach(&self, ray: Ray) -> f32 {
-        let oc = point_subtract(self.center, ray.origin).to_vector();
-        dot_product(oc, ray.direction)
+        let oc = point_subtract(self.center.copy(), ray.origin.copy()).to_vector();
+        dot_product(oc, ray.normalize_direction())
     }
+
+    pub fn half_chord_distance_squared(&self, closest_approach: f32) -> f32 {
+        self.radius_squared * (closest_approach * closest_approach)
+    }
+}
+
+#[test]
+fn sphere_test() {
+    let test_ray = crate::rays::build_ray(
+        crate::points::build_point(1.0, -2.0, -1.0),
+        crate::vectors::build_vector(1.0, 2.0, 4.0),
+        10000000000000000.0,
+    );
+    let normalized = test_ray.normalize_direction();
+    println!("{} {} {}", normalized.x, normalized.y, normalized.z);
 }
 
 //maybe make is_intersection for each shape as impl function
