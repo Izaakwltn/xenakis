@@ -11,7 +11,7 @@ use crate::vectors::Vector;
 pub struct Ray {
     pub origin: Point,
     pub direction: Vector,
-    t_max: f32,
+    pub t_max: f32,
 }
 
 pub fn build_ray(origin: Point, direction: Vector, t_max: f32) -> Ray {
@@ -35,11 +35,11 @@ impl Clone for Ray {
 }
 impl Ray {
     pub fn normalize_direction(&self) -> Vector {
-        let magn = self.direction.length().sqrt();
+        let magn = self.direction.length();
         crate::vectors::build_vector(
-            (self.direction.x / magn),
-            (self.direction.y / magn),
-            (self.direction.z / magn),
+            self.direction.x / magn,
+            self.direction.y / magn,
+            self.direction.z / magn,
         )
     }
 
@@ -55,3 +55,6 @@ impl Ray {
     }
 }
 //direction is normalized- x^2 + y^2 + z^2 = 1 (direction)
+
+#[test]
+fn ray_test() {}

@@ -61,18 +61,33 @@ impl Sphere {
         ray.point_on_the_line(t)
     }*/
 
-    pub fn origin_inside_sphere(&self, ray: Ray) -> bool {
-        let oc = point_subtract(self.center.copy(), ray.origin.copy()).to_vector();
-        dot_product(oc, oc) < self.radius_squared
+    pub fn ray_to_center(&self, ray: Ray) -> Ray {
+        let oc = point_subtract(self.center, ray.origin).to_vector();
+        crate::rays::build_ray(ray.origin, oc, ray.t_max)
+    }
+
+    pub fn origin_outside_sphere(&self, ray: Ray) -> bool {
+        let oc = self.ray_to_center(ray).direction;
+        dot_product(oc, oc) > self.radius_squared
     }
 
     pub fn closest_approach(&self, ray: Ray) -> f32 {
-        let oc = point_subtract(self.center.copy(), ray.origin.copy()).to_vector();
+        let oc = self.ray_to_center(ray).direction;
         dot_product(oc, ray.normalize_direction())
     }
 
-    pub fn half_chord_distance_squared(&self, closest_approach: f32) -> f32 {
-        self.radius_squared * (closest_approach * closest_approach)
+    pub fn sphere_in_front(&self, ray: Ray) -> bool {
+        self.closest_approach(ray) > 0.0
+    }
+
+    pub fn half_chord_distance_squared(&self, ray: Ray) -> f32 {
+        let ca = self.closest_approach(ray);
+        let oc = self.ray_to_center(ray).direction.length();
+        self.radius_squared - ((oc * oc) - (ca * ca))
+    }
+
+    pub fn intersection_distance(&self, ray: Ray) -> f32 {
+        self.closest_approach(ray) - self.half_chord_distance_squared(ray).sqrt()
     }
 }
 
@@ -83,8 +98,26 @@ fn sphere_test() {
         crate::vectors::build_vector(1.0, 2.0, 4.0),
         10000000000000000.0,
     );
+    let test_sphere = build_sphere(crate::points::build_point(3.0, 0.0, 5.0), 3.0);
     let normalized = test_ray.normalize_direction();
-    println!("{} {} {}", normalized.x, normalized.y, normalized.z);
+    println!(
+        "Normalized Ray Direction: {} {} {}",
+        normalized.x, normalized.y, normalized.z
+    );
+    let origin_check = test_sphere.origin_outside_sphere(test_ray);
+    println!("Does the ray originate inside the sphere? {}", origin_check);
+
+    let ca = test_sphere.closest_approach(test_ray);
+    println!("Closest Approach: {:.32}", ca);
+    let sphere_front_check = test_sphere.sphere_in_front(test_ray);
+    println!(
+        "Is the sphere in front of the origin? {}",
+        sphere_front_check
+    );
+    let half_chord_check = test_sphere.half_chord_distance_squared(test_ray);
+    println!("Half Chord Distance Squared: {}", half_chord_check);
+    let intersection_distance_check = test_sphere.intersection_distance(test_ray);
+    println!("intersection distance: {:.32}", intersection_distance_check);
 }
 
 //maybe make is_intersection for each shape as impl function

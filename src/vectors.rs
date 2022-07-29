@@ -74,6 +74,8 @@ fn vector_test() {
     assert_eq!(test_vector.y, 1.0);
     assert_eq!(test_vector.z, 0.0);
 
+    let sample_vector = build_vector(1.0, 2.0, 4.0);
+    println!("{:.32}", sample_vector.length());
     let test_copy = test_vector.copy();
     assert_eq!(test_copy.x, 0.0);
     assert_eq!(test_copy.y, 1.0);
