@@ -89,6 +89,20 @@ impl Sphere {
     pub fn intersection_distance(&self, ray: Ray) -> f32 {
         self.closest_approach(ray) - self.half_chord_distance_squared(ray).sqrt()
     }
+    pub fn intersection_point(&self, ray: Ray) -> Point {
+        let origin = ray.origin;
+        let dir = ray.normalize_direction();
+        let int_dist = self.intersection_distance(ray);
+        crate::points::build_point(
+            origin.x + (dir.x * int_dist),
+            origin.y + (dir.y * int_dist),
+            origin.z + (dir.z * int_dist),
+        )
+    }
+    /*    pub fn unit_vector_normal(&self, ray: Ray) -> Vector {
+        let i = self.intersection_point(ray);
+        let c = self.center;
+    }*/
 }
 
 #[test]
@@ -118,6 +132,11 @@ fn sphere_test() {
     println!("Half Chord Distance Squared: {}", half_chord_check);
     let intersection_distance_check = test_sphere.intersection_distance(test_ray);
     println!("intersection distance: {:.32}", intersection_distance_check);
+    let intersection_point_check = test_sphere.intersection_point(test_ray);
+    println!(
+        "Intersection point {} {} {}",
+        intersection_point_check.x, intersection_point_check.y, intersection_point_check.z
+    );
 }
 
 //maybe make is_intersection for each shape as impl function
