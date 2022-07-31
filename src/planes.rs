@@ -16,7 +16,7 @@ impl Plane {
         (self.a * self.a) + (self.b * self.b) + (self.c * self.c) == 0
     }
 
-    fn origin_to_intersection_numerator(&self, ray: Ray) {
+    fn origin_to_intersection_denominator(&self, ray: Ray) {
         let dir = ray.direction;
         crate::vectors::dot_product(self.a, dir.x)
             + crate::vectors::dot_product(self.b, dir.y)
@@ -24,11 +24,23 @@ impl Plane {
     }
 
     fn not_in_path(&self, ray: Ray) {
-        self.origin_to_intersection_numerator(ray) >= 0
+        self.origin_to_intersection_denominator(ray) >= 0
     }
 
-    // maybe rename nominator or something
-    fn second_dot_product() {}
+    //
+    fn origin_to_intersection_numerator(&self, ray: Ray) {
+        let o = ray.origin;
+        -(self.a * o.x + self.b * o.y + self.c * o.z + self.d)
+    }
+
+    fn origin_to_intersection(&self, ray: Ray) {
+        self.origin_to_intersection_numerator(ray) / self.origin_to_intersection_denominator(ray)
+    }
+
+    //
+    fn plane_in_front(&self, ray: Ray) {
+        self.origin_to_intersection >= 0
+    }
 }
 
 //A * x + B * y + C * z + D = 0, D
