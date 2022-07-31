@@ -1,7 +1,4 @@
-// Eventually this will be for general shape functions
-// or for processing lists of shapes
-
-/*use crate::points::point_subtract;
+use crate::points::point_subtract;
 //use crate::points::to_vector;
 use crate::points::Point;
 use crate::rays::Ray;
@@ -31,67 +28,49 @@ pub fn build_sphere(center: Point, radius: f32) -> Sphere {
 }
 
 impl Sphere {
-    /*pub fn slow_is_intersection(&self, ray: Ray) -> bool {
-        let a = ray.normalize_direction();
-        let b = 2.0
-            * ((a.x * (ray.origin.x + self.center.x))
-                + (a.y * (ray.origin.x + self.center.x))
-                + (a.z * (ray.origin.z + self.center.z)));
-        let c = (ray.origin.x - self.center.x).powf(2.0)
-            + (ray.origin.y - self.center.y).powf(2.0)
-            + (ray.origin.z - self.center.y).powf(2.0)
-            - self.radius.powf(2.0);
-
-        let discriminant = b.powf(2.0) - 4.0 * c;
-
-        discriminant > 0.0
-    }
-    pub fn slow_calculate_intersection(&self, ray: Ray) -> Point {
-        let a = ray.normalize_direction();
-        let b = 2.0
-            * ((a.x * (ray.origin.x + self.center.x))
-                + (a.y * (ray.origin.x + self.center.x))
-                + (a.z * (ray.origin.z + self.center.z)));
-        let c = (ray.origin.x - self.center.x).powf(2.0)
-            + (ray.origin.y - self.center.y).powf(2.0)
-            + (ray.origin.z - self.center.y).powf(2.0)
-            - self.radius.powf(2.0);
-
-        let discriminant = b.powf(2.0) - 4.0 * c;
-
-        let t = (-b - discriminant.sqrt()) / 2.0;
-
-        ray.point_on_the_line(t)
-    }*/
-
-    pub fn ray_to_center(&self, ray: Ray) -> Ray {
-        let oc = point_subtract(self.center, ray.origin).to_vector();
-        crate::rays::build_ray(ray.origin, oc, ray.t_max)
+    //Finds the vector from the ray origin to the sphere center
+    fn origin_to_center(&self, ray: Ray) -> Vector {
+        point_subtract(self.center, ray.origin).to_vector()
+        // crate::rays::build_ray(ray.origin, oc, ray.t_max)
     }
 
-    pub fn origin_outside_sphere(&self, ray: Ray) -> bool {
-        let oc = self.ray_to_center(ray).direction;
+    //Checks whether the ray origin is outside the sphere
+    fn origin_outside_sphere(&self, ray: Ray) -> bool {
+        let oc = self.origin_to_center(ray);
         dot_product(oc, oc) > self.radius_squared
     }
 
-    pub fn closest_approach(&self, ray: Ray) -> f32 {
-        let oc = self.ray_to_center(ray).direction;
+    // Finds the ray's closest approach to the sphere
+    fn closest_approach(&self, ray: Ray) -> f32 {
+        let oc = self.origin_to_center(ray);
         dot_product(oc, ray.normalize_direction())
     }
 
-    pub fn sphere_in_front(&self, ray: Ray) -> bool {
+    // checks whether the sphere is in front of the ray
+    fn sphere_in_front(&self, ray: Ray) -> bool {
         self.closest_approach(ray) > 0.0
     }
 
-    pub fn half_chord_distance_squared(&self, ray: Ray) -> f32 {
+    // Checks the distance from the closest approach to the sphere's center
+    fn half_chord_distance_squared(&self, ray: Ray) -> f32 {
         let ca = self.closest_approach(ray);
-        let oc = self.ray_to_center(ray).direction.length();
+        let oc = self.origin_to_center(ray).length();
         self.radius_squared - ((oc * oc) - (ca * ca))
     }
 
-    pub fn intersection_distance(&self, ray: Ray) -> f32 {
+    fn intersection_distance(&self, ray: Ray) -> f32 {
         self.closest_approach(ray) - self.half_chord_distance_squared(ray).sqrt()
     }
+
+    pub fn intersects(&self, ray: Ray) -> bool {
+        if (self.origin_outside_sphere(ray)) {
+            return false;
+        } else if (self.sphere_in_front(ray)) {
+            return true;
+        }
+        return false;
+    }
+
     pub fn intersection_point(&self, ray: Ray) -> Point {
         let origin = ray.origin;
         let dir = ray.normalize_direction();
@@ -148,12 +127,3 @@ fn sphere_test() {
         unit_vector_check.x, unit_vector_check.y, unit_vector_check.z
     );
 }
-
-//maybe make is_intersection for each shape as impl function
-
-/*pub fn is_intersection(sphere: Sphere, ray: Ray) -> bool {
-    let A = ray.normalize_direction();
-    let B = 2 * (A.x * (ray.origin.x + sphere.center
-}
-*/
-*/
