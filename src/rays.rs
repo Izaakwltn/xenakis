@@ -57,4 +57,6 @@ impl Ray {
 //direction is normalized- x^2 + y^2 + z^2 = 1 (direction)
 
 #[test]
-fn ray_test() {}
+fn ray_test() {
+    //let test_ray = default_vector();
+}

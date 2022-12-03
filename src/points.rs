@@ -32,6 +32,9 @@ impl Point {
     pub fn to_vector(&self) -> Vector {
         crate::vectors::build_vector(self.x, self.y, self.z)
     }
+    pub fn print(&self) {
+        println!("{:.32}, {:.32}, {:.32}", self.x, self.y, self.z)
+    }
 }
 
 pub fn point_subtract(a: Point, b: Point) -> Point {
