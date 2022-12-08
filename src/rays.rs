@@ -1,7 +1,4 @@
-use crate::points::build_point;
-use crate::points::default_point;
 use crate::points::Point;
-use crate::vectors::default_vector;
 use crate::vectors::Vector;
 
 //------------------------------------------------------------------------
@@ -14,16 +11,17 @@ pub struct Ray {
     pub t_max: f32,
 }
 
-pub fn build_ray(origin: Point, direction: Vector, t_max: f32) -> Ray {
-    Ray {
-        origin,
-        direction,
-        t_max, //distance from the origin
+impl Ray {
+    pub fn new(origin: Point, direction: Vector, t_max: f32) -> Self {
+        Self {
+            origin,
+            direction,
+            t_max,
+        }
     }
-}
-
-pub fn default_ray() -> Ray {
-    build_ray(default_point(), default_vector(), 10000000000000000.0)
+    pub fn default() -> Self {
+        Self::new(Point::default(), Vector::default(), 1000000000000000.0)
+    }
 }
 
 impl Copy for Ray {}
@@ -36,7 +34,7 @@ impl Clone for Ray {
 impl Ray {
     pub fn normalize_direction(&self) -> Vector {
         let magn = self.direction.length();
-        crate::vectors::build_vector(
+        Vector::new(
             self.direction.x / magn,
             self.direction.y / magn,
             self.direction.z / magn,
@@ -47,7 +45,7 @@ impl Ray {
         let d = self.normalize_direction();
         let directional = d.scalar_mult(t);
 
-        build_point(
+        Point::new(
             self.origin.x + directional.x,
             self.origin.y + directional.y,
             self.origin.z + directional.z,

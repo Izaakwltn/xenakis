@@ -1,8 +1,5 @@
-use crate::points::build_point;
 use crate::points::Point;
-use crate::rays::build_ray;
 use crate::rays::Ray;
-use crate::vectors::build_vector;
 use crate::vectors::Vector;
 
 // Planes
@@ -14,12 +11,13 @@ pub struct Plane {
     d: f32,
 }
 
-pub fn build_plane(a: f32, b: f32, c: f32, d: f32) -> Plane {
-    Plane { a, b, c, d }
-}
-
-pub fn default_plane() -> Plane {
-    build_plane(0.0, 0.0, 0.0, 0.0)
+impl Plane {
+    pub fn new(a: f32, b: f32, c: f32, d: f32) -> Self {
+        Self { a, b, c, d }
+    }
+    pub fn default() -> Self {
+        Self::new(0.0, 0.0, 0.0, 0.0)
+    }
 }
 
 impl Plane {
@@ -28,7 +26,7 @@ impl Plane {
     }
 
     fn origin_to_intersection_denominator(&self, ray: Ray) -> f32 {
-        crate::vectors::dot_product(build_vector(self.a, self.b, self.c), ray.direction)
+        crate::vectors::dot_product(Vector::new(self.a, self.b, self.c), ray.direction)
     }
 
     fn not_in_path(&self, ray: Ray) -> bool {
@@ -56,16 +54,16 @@ impl Plane {
         let vd = self.origin_to_intersection_denominator(ray);
         let t = self.origin_to_intersection_numerator(ray) / vd;
         let o = ray.origin;
-        build_point(o.x + vd * t, o.y + vd * t, o.z + vd * t)
+        Point::new(o.x + vd * t, o.y + vd * t, o.z + vd * t)
     }
 }
 
 #[test]
 fn plane_test() {
-    let test_plane = build_plane(1.0, 0.0, 0.0, -7.0);
-    let test_ray = build_ray(
-        build_point(2.0, 3.0, 4.0),
-        build_vector(0.577, 0.577, 0.577),
+    let test_plane = Plane::new(1.0, 0.0, 0.0, -7.0);
+    let test_ray = Ray::new(
+        Point::new(2.0, 3.0, 4.0),
+        Vector::new(0.577, 0.577, 0.577),
         10000000000000000.0,
     );
     assert!(test_plane.not_in_path(test_ray));
