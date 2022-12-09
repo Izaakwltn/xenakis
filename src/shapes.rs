@@ -1,19 +1,11 @@
-use crate::rays::Ray;
-
-// Eventually this will be for general shape functions
-// or for processing lists of shapes
-
-/*use crate::points::point_subtract;
-//use crate::points::to_vector;
 use crate::points::Point;
 use crate::rays::Ray;
-use crate::vectors::dot_product;
-use crate::vectors::Vector;*/
 
 //------------------------------------------------------------------------
 //General Shape structures and functions
 //------------------------------------------------------------------------
 
+#[derive(Debug)]
 pub struct Hue {
     r: f32,
     g: f32,
@@ -21,8 +13,8 @@ pub struct Hue {
 }
 
 pub trait Shape {
-    fn intersects(&self, ray: Ray);
-    fn intersection_point(&self, ray: Ray);
+    fn intersects(&self, ray: Ray) -> bool;
+    fn intersection_point(&self, ray: Ray) -> Point;
 }
 
 //pub trait ShapeAttributes {}

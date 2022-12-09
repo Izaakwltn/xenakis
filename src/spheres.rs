@@ -1,8 +1,8 @@
 use crate::points::point_subtract;
-use crate::shapes::Hue;
-//use crate::shapes::Shape;
 use crate::points::Point;
 use crate::rays::Ray;
+use crate::shapes::Hue;
+use crate::shapes::Shape;
 use crate::vectors::dot_product;
 use crate::vectors::Vector;
 
@@ -10,6 +10,7 @@ use crate::vectors::Vector;
 //Spheres
 //------------------------------------------------------------------------
 
+#[derive(Debug)]
 pub struct Sphere {
     center: Point,
     radius: f32,

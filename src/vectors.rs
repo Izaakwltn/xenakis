@@ -28,13 +28,15 @@ impl Clone for Vector {
         *self
     }
 }
-//Converting to a Point
+
+//Converting Vector to Point
 impl Vector {
     pub fn to_point(&self) -> Point {
         crate::points::Point::new(self.x, self.y, self.z)
     }
 }
 
+//Converting Point to Vector
 impl Point {
     pub fn to_vector(&self) -> Vector {
         Vector::new(self.x, self.y, self.z)

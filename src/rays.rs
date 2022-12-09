@@ -5,12 +5,14 @@ use crate::vectors::Vector;
 //Rays
 //------------------------------------------------------------------------
 
+#[derive(Debug)]
 pub struct Ray {
     pub origin: Point,
     pub direction: Vector,
     pub t_max: f32,
 }
 
+//Making new Rays
 impl Ray {
     pub fn new(origin: Point, direction: Vector, t_max: f32) -> Self {
         Self {
@@ -31,6 +33,7 @@ impl Clone for Ray {
         *self
     }
 }
+
 impl Ray {
     pub fn normalize_direction(&self) -> Vector {
         let magn = self.direction.length();

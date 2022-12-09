@@ -1,16 +1,20 @@
 use crate::points::Point;
 use crate::rays::Ray;
+use crate::shapes::Shape;
 use crate::vectors::Vector;
 
 // Planes
 
+#[derive(Debug)]
 pub struct Plane {
     a: f32,
     b: f32,
     c: f32,
     d: f32,
+    //hue: Hue,
 }
 
+//Making new Planes
 impl Plane {
     pub fn new(a: f32, b: f32, c: f32, d: f32) -> Self {
         Self { a, b, c, d }
@@ -50,7 +54,20 @@ impl Plane {
     }
 
     // instead of doing it all as one, functional item, do the checks and then the intersection in a function with side effects
-    pub fn intersection_point(&self, ray: Ray) -> Point {
+}
+
+impl Shape for Plane {
+    fn intersects(&self, ray: Ray) -> bool {
+        let vd = self.origin_to_intersection_denominator(ray);
+        if vd <= 0.0 {
+            false
+        } else {
+            let vo = self.origin_to_intersection_numerator(ray);
+            vo / vd > 0.0 //expressions are cool
+        }
+    }
+
+    fn intersection_point(&self, ray: Ray) -> Point {
         let vd = self.origin_to_intersection_denominator(ray);
         let t = self.origin_to_intersection_numerator(ray) / vd;
         let o = ray.origin;

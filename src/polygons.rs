@@ -2,12 +2,12 @@ use crate::points::build_point;
 use std::Vec;
 
 pub struct Polygon {
-    plane: Plane, // maybe
+    //plane: Plane, // maybe
     points: Vec<Point>,
 }
 
-pub fn build_polygon(plane: Plane, points: Vec) -> Polygon {
-    Polygon { plane, points }
+pub fn build_polygon(points: Vec) -> Polygon {
+    Polygon { points }
 }
 // plane defined by polygon points
 

@@ -25,15 +25,10 @@ impl Clone for Point {
     }
 }
 
-impl Point {
-    pub fn print(&self) {
-        println!("{:?}", self)
-    }
-}
-
 pub fn point_subtract(a: Point, b: Point) -> Point {
     Point::new(a.x - b.x, a.y - b.y, a.z - b.z)
 }
+
 #[test]
 fn point_test() {
     let test_point = Point::default();
