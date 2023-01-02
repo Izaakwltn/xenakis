@@ -15,11 +15,11 @@ pub struct Sphere {
     center: Point,
     radius: f32,
     radius_squared: f32,
-    hue: Hue,
+    //hue: Hue,
 }
 
 impl Sphere {
-    pub fn new(center: Point, radius: f32, hue: Hue) -> Self {
+    pub fn new(center: Point, radius: f32) -> Self {
         Self {
             center,
             radius,
@@ -84,7 +84,7 @@ impl Shape for Sphere {
         let origin = ray.origin;
         let dir = ray.normalize_direction();
         let int_dist = self.intersection_distance(ray);
-        crate::points::build_point(
+        Point::new(
             origin.x + (dir.x * int_dist),
             origin.y + (dir.y * int_dist),
             origin.z + (dir.z * int_dist),
@@ -94,12 +94,12 @@ impl Shape for Sphere {
 
 #[test]
 fn sphere_test() {
-    let test_ray = crate::rays::build_ray(
-        crate::points::build_point(1.0, -2.0, -1.0),
-        crate::vectors::build_vector(1.0, 2.0, 4.0),
+    let test_ray = Ray::new(
+        Point::new(1.0, -2.0, -1.0),
+        Vector::new(1.0, 2.0, 4.0),
         10000000000000000.0,
     );
-    let test_sphere = build_sphere(crate::points::build_point(3.0, 0.0, 5.0), 3.0);
+    let test_sphere = Sphere::new(Point::new(3.0, 0.0, 5.0), 3.0);
     let normalized = test_ray.normalize_direction();
     println!(
         "Normalized Ray Direction: {} {} {}",

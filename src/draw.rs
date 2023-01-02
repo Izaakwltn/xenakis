@@ -1,9 +1,13 @@
 // Draw.rs
+//maybe eventually split into image/screen/draw files
+use std::fs::File;
+use std::io::BuffWriter;
+use std::path::Path;
 
-//figure out Polgon
+//when used in a function, use let instead
+static path: Path = Path::new(r"/home/izaakwalton/programming/rust/xenakis/src/examples/test.png");
 
-//maybe image struct, takes
-
+pub fn encode(filename: String, pixels: Vec<Hue>) {}
 pub struct Image {
     pixels: Vec<Hue>,
 }

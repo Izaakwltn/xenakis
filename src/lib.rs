@@ -1,7 +1,10 @@
+mod encoding;
 mod planes;
 mod points;
+//mod polygons;
 mod rays;
 mod shapes;
+mod spheres;
 mod vectors;
 
 #[cfg(test)]

@@ -1,20 +1,28 @@
-use crate::points::build_point;
-use std::Vec;
+use crate::planes::Plane;
+use crate::points::Point;
+use std::vec::Vec;
 
+//
+// Polygons
+//
+
+#[derive(Debug)]
 pub struct Polygon {
     //plane: Plane, // maybe
     points: Vec<Point>,
 }
 
-pub fn build_polygon(points: Vec) -> Polygon {
-    Polygon { points }
+impl Polygon {
+    pub fn new(points: Vec<Point>) -> Self {
+        Self { points }
+    }
 }
 // plane defined by polygon points
 
 impl Polygon {
-    pub fn polygon_plane(&self) -> Plane {}
+    //pub fn polygon_plane(&self) -> Plane {}
 
-    pub fn edge_cross_check(a: tuple, b: tuple) -> bool {
+    pub fn edge_cross_check(a: &mut [Point], b: &mut [Point]) -> bool {
         let mut sh;
         let mut nsh;
         if a[1] >= 0.0 {
@@ -42,8 +50,8 @@ impl Polygon {
 
     pub fn inside(&self, intersection_point: Point) -> bool {
         let mut xz_coords = Vec::new();
-        for i in self.Points {
-            xz_coords.push((i.x, i.z));
+        for i in self.points {
+            xz_coords.push([i.x, i.z]);
         }
         let new_origin = (intersection_point.x, intersection_point.z);
         let mut new_coords = Vec::new();

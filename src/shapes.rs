@@ -7,9 +7,19 @@ use crate::rays::Ray;
 
 #[derive(Debug)]
 pub struct Hue {
-    r: f32,
-    g: f32,
-    b: f32,
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
+    pub a: f32,
+}
+
+impl Hue {
+    pub fn new(r: f32, g: f32, b: f32, a: f32) -> Self {
+        Self { r, g, b, a }
+    }
+    pub fn default() -> Self {
+        Self::new(0.0, 0.0, 0.0, 0.0)
+    }
 }
 
 pub trait Shape {
